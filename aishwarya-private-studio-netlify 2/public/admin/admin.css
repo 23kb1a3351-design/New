@@ -685,3 +685,71 @@ input.has-toggle { padding-right: 46px; }
   .recovery-grid { grid-template-columns: 1fr; }
   .recovery-actions { flex-direction: column; }
 }
+
+
+/* ─── Editorial refinement · approved visual layer ─────────────── */
+@media (min-width: 861px) {
+  .shell {
+    width: min(100% - 64px, 1080px);
+    padding: 58px 0 38px;
+    display: grid;
+    grid-template-columns: minmax(190px, .7fr) minmax(0, 1.3fr);
+    grid-template-rows: auto 1fr auto;
+    column-gap: clamp(54px, 9vw, 132px);
+  }
+  .panel-header {
+    grid-column: 1;
+    align-items: flex-start;
+    margin: 16px 0 0;
+  }
+  .card {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    width: 100%;
+    max-width: 660px;
+    justify-self: end;
+  }
+  .panel-footer {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    margin-top: 0;
+  }
+}
+.brand { letter-spacing: .3em; }
+.brand-sub { color: var(--gold-light); letter-spacing: .3em; }
+.card {
+  border-radius: 0;
+  border-color: rgba(201, 157, 68, .28);
+  box-shadow: 16px 16px 0 rgba(40, 61, 50, .72), 0 22px 60px rgba(0, 0, 0, .22);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  left: -1px; top: -1px;
+  width: 86px; height: 86px;
+  border-left: 3px solid var(--gold);
+  border-top: 3px solid var(--gold);
+  pointer-events: none;
+}
+.card::after {
+  content: "AISHWARYA / PRIVATE ACCESS";
+  position: absolute;
+  right: 28px; top: 22px;
+  color: rgba(240,236,227,.42);
+  font: 9px 'DM Mono', monospace;
+  letter-spacing: .14em;
+}
+h1 { letter-spacing: -.055em; }
+.stepper-bar { border-radius: 0 !important; }
+.button, button[type=submit] {
+  border-radius: 0 !important;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.button::after, button[type=submit]::after { content: " →"; color: var(--gold-light); }
+input, .otp-digit { border-radius: 0 !important; }
+.panel-footer { font-family: 'DM Mono', monospace; letter-spacing: .1em; text-transform: uppercase; }
+@media (max-width: 860px) {
+  .card { border-radius: 0; box-shadow: 10px 10px 0 rgba(40,61,50,.65), 0 16px 44px rgba(0,0,0,.18); }
+  .card::after { display: none; }
+}
