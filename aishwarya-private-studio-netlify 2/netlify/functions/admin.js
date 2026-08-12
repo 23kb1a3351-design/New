@@ -70,7 +70,7 @@ async function loginRecovery(body) { const challenge = await read(CHALLENGE(body
 
 exports.handler = async event => {
   connectLambda(event);
-  store = getStore({ name: 'aishwarya-admin', consistency: 'strong' });
+  store = getStore({ name: 'aishwarya-admin', consistency: 'eventual' });
   try {
     if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed.' });
     const action = new URLSearchParams(event.rawQuery || '').get('action'); const body = event.body ? JSON.parse(event.body) : {};
