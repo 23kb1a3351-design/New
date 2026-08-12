@@ -1,8 +1,10 @@
-const { getStore } = require('@netlify/blobs');
+const { connectLambda, getStore } = require('@netlify/blobs');
 const crypto = require('crypto');
 const QRCode = require('qrcode');
 
-const store = getStore({ name: 'aishwarya-admin', consistency: 'strong' });
+// Netlify Blobs needs the invocation context when this runs as a legacy
+// Netlify Function. It is initialised inside the handler below.
+let store;
 const OWNER = 'owner.json';
 const PENDING = id => `pending/${id}.json`;
 const CHALLENGE = id => `challenge/${id}.json`;
@@ -67,6 +69,8 @@ async function loginTotp(body) { const challenge = await read(CHALLENGE(body.cha
 async function loginRecovery(body) { const challenge = await read(CHALLENGE(body.challengeId)); if (!challenge || challenge.expiresAt < now()) throw fail(401, 'Your sign-in session expired. Start again.'); const owner = await read(OWNER); if (!owner || owner.id !== challenge.ownerId) throw fail(401, 'Sign in again.'); const value = clean(body.code).toUpperCase(); const index = await (async () => { for (let i = 0; i < owner.recoveryHashes.length; i += 1) if (await matchesPassword(value, owner.recoveryHashes[i])) return i; return -1; })(); if (index < 0) throw fail(401, 'That recovery code is not correct or has already been used.'); owner.recoveryHashes.splice(index, 1); await put(OWNER, owner); await remove(CHALLENGE(challenge.id)); const token = sign({ sub: owner.id, exp: now() + 8 * 60 * 60 * 1000 }); return { response: { name: owner.name }, cookie: cookie('aishwarya_session', token, 8 * 60 * 60) }; }
 
 exports.handler = async event => {
+  connectLambda(event);
+  store = getStore({ name: 'aishwarya-admin', consistency: 'strong' });
   try {
     if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed.' });
     const action = new URLSearchParams(event.rawQuery || '').get('action'); const body = event.body ? JSON.parse(event.body) : {};
