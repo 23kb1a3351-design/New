@@ -274,3 +274,50 @@ footer a:hover { color: var(--gold); }
   footer p { margin: 22px 0; }
   footer a:last-child { font-size: 12px; }
 }
+
+
+/* ─── Mobile viewport protection & WhatsApp contact ─────────── */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, svg, video, iframe { max-width: 100%; }
+.whatsapp-float {
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 8px 18px 8px 9px;
+  border-radius: 999px;
+  background: #1f8f52;
+  color: #fff;
+  box-shadow: 0 10px 28px rgba(16, 71, 39, .28);
+  text-decoration: none;
+  font: 600 12px 'DM Sans', sans-serif;
+  letter-spacing: .03em;
+  transition: transform var(--t), background var(--t);
+}
+.whatsapp-float:hover { background: #167642; transform: translateY(-2px); }
+.whatsapp-float span {
+  display: grid;
+  place-items: center;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 50%;
+  font: 600 10px 'DM Mono', monospace;
+  letter-spacing: .04em;
+}
+@media (max-width: 720px) {
+  .notice { padding-inline: 18px; overflow-wrap: anywhere; }
+  header, .hero, .values, .collection, .story, .contact, footer { max-width: 100%; }
+  .whatsapp-float {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, calc(env(safe-area-inset-bottom) + 8px));
+    width: 56px; height: 56px;
+    min-height: 56px;
+    justify-content: center;
+    padding: 0;
+  }
+  .whatsapp-float b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
